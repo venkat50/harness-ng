@@ -1,0 +1,5 @@
+name: <+stage.variables.name>
+replicas: <+placeholder>
+
+createNamespace: true
+namespace: <+infra.?>
