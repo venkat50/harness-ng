@@ -24,7 +24,10 @@ pipeline:
                       type: Inline
                       spec:
                         script: echo "Hello World"
-                    environmentVariables: []
+                    environmentVariables:
+                      - name: greeting
+                        type: String
+                        value: Hello
                     outputVariables: []
                   timeout: 10m
         tags: {}
