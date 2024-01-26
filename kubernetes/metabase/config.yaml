@@ -9,4 +9,4 @@ data:
   MB_DB_PORT: '5432'
   MB_DB_USER: postgres
   MB_DB_PASS: postgres
-  MB_DB_HOST: venkat-db-pg.co1lhpexrauy.us-east-2.rds.amazonaws.com
+  MB_DB_HOST: {{.Values.rds_hostname}}
