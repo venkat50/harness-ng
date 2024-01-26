@@ -6,18 +6,6 @@ data "aws_vpc" "my-vpc" {
   id = var.vpc_id
 }
 
-
-
-resource "aws_db_subnet_group" "subnet_group" {
-  name       = "rds-subnet-group"
-  subnet_ids = var.subnet_group
-
-  tags = {
-    Name = "Demo"
-  }
-}
-
-
 resource "aws_db_parameter_group" "param_group" {
   name   = "rds-param-group"
   family = "postgres15"
