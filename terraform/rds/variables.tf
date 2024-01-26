@@ -12,10 +12,6 @@ variable "vpc_id" {
 
 }
 
-variable "subnet_group" {
-
-}
-
 variable "sg_id" {
 
 }
