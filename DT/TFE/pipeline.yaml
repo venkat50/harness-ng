@@ -1,6 +1,6 @@
 pipeline:
-  name: demo-tfe
-  identifier: demotfe
+  name: tfe-demo
+  identifier: tfedemo
   projectIdentifier: sample
   orgIdentifier: default
   tags: {}
@@ -26,7 +26,7 @@ pipeline:
                             - identifier: tfe
                               type: CustomArtifact
                               spec:
-                                version: <+stage.variables.branch>
+                                version: <+pipeline.variables.version>
               environment:
                 environmentRef: dev
                 infrastructureDefinitions:
@@ -64,7 +64,7 @@ pipeline:
                             - identifier: tfe
                               type: CustomArtifact
                               spec:
-                                version: <+stage.variables.branch>
+                                version: <+pipeline.variables.version>
               environment:
                 environmentRef: qa1
                 infrastructureDefinitions:
@@ -88,6 +88,11 @@ pipeline:
       required: false
       value: <+input>
     - name: ORG
+      type: String
+      description: ""
+      required: false
+      value: <+input>
+    - name: version
       type: String
       description: ""
       required: false
