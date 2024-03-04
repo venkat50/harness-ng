@@ -135,6 +135,22 @@ template:
               identifier: terraform
               steps:
                 - step:
+                    type: GitClone
+                    name: GitClone
+                    identifier: GitClone
+                    spec:
+                      connectorRef: account.venkat50
+                      repoName: hello-world
+                      cloneDirectory: /harness/hello-world
+                      resources:
+                        limits:
+                          memory: 100Mi
+                          cpu: 100m
+                      build:
+                        type: branch
+                        spec:
+                          branch: master
+                - step:
                     type: Run
                     name: setup
                     identifier: setup
@@ -151,6 +167,10 @@ template:
                         cat <<_EOF_ > /workspace/_override.tf
                         <+fileStore.getAsString("/TFE/override.tf")>
                         _EOF_
+                      resources:
+                        limits:
+                          memory: 100Mi
+                          cpu: 100m
                 - step:
                     type: Run
                     name: plan
@@ -164,6 +184,10 @@ template:
                         cp /workspace/_override.tf $HOME/_override.tf
                         cat $HOME/_override.tf
                         echo terraform plan
+                      resources:
+                        limits:
+                          memory: 100Mi
+                          cpu: 100m
                 - step:
                     type: Run
                     name: apply
@@ -179,12 +203,16 @@ template:
 
                         cat $HOME/_override.tf
                         echo terraform apply
+                      resources:
+                        limits:
+                          memory: 100Mi
+                          cpu: 100m
               sharedPaths:
                 - /workspace
               stepGroupInfra:
                 type: KubernetesDirect
                 spec:
-                  connectorRef: org.k3s
+                  connectorRef: k3ssa
                   namespace: harness-demo
         rollbackSteps: []
       environment:
