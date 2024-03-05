@@ -35,7 +35,6 @@
 
   - name: longrunner
     connection: local
-    gather_facts: false
     command: /bin/sleep 15
     async: 45
     poll: 5
@@ -53,6 +52,5 @@
 
   - name: write some_random_foo configuration
     connection: local
-    gather_facts: false
     template: src=templates/foo.j2 dest=/etc/some_random_foo.conf
 
