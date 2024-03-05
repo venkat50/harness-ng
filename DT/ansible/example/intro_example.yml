@@ -52,5 +52,5 @@
 
   - name: write some_random_foo configuration
     connection: local
-    template: src=templates/foo.j2 dest=/etc/some_random_foo.conf
+    template: src=templates/foo.j2 dest=/tmp/some_random_foo.conf
 
