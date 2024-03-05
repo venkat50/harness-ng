@@ -49,27 +49,4 @@
 
   - name: write some_random_foo configuration
     template: src=templates/foo.j2 dest=/etc/some_random_foo.conf
-    notify:
-    - restart apache
 
-  # make sure httpd is installed at the latest version
-
-  - name: install httpd
-    yum: pkg=httpd state=latest
-
-  # make sure httpd is running
-
-  - name: httpd start
-    service: name=httpd state=running
-
-  # handlers are only run when things change, at the very end of each
-  # play.  Let's define some.  The names are significant and must
-  # match the 'notify' sections above
-
-  handlers:
-
-    # this particular handler is run when some_random_foo.conf
-    # is changed, and only then
-
-    - name: restart apache
-      service: name=httpd state=restarted
