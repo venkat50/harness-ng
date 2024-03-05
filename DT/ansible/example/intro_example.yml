@@ -32,6 +32,7 @@
   # obviously this does nothing useful but you get the idea
 
   - name: longrunner
+    connection: local
     command: /bin/sleep 15
     async: 45
     poll: 5
@@ -48,5 +49,6 @@
   # end of the playbook run
 
   - name: write some_random_foo configuration
+    connection: local
     template: src=templates/foo.j2 dest=/etc/some_random_foo.conf
 
