@@ -1,2 +1,2 @@
 INSTANCE_COUNT: 1
-USER: venkat
+USER: <+project.variables.user>
