@@ -180,6 +180,10 @@ Part 5 - Execute Pipeline and review
 ```
 my_tas_service
 ```
+- Artifact Path
+```
+demo/sample-app/1.0.0/sample-app-1.0.0.zip
+```
 - Specify Environment
 ```
 dev
@@ -189,7 +193,7 @@ dev
 ```
 my_tas_dev
 ```
-- 
+- Run Pipeline
 
 
 
