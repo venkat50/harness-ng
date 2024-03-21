@@ -52,7 +52,7 @@ labuser
 - Click Finish
 - `TAS connector` has been successfully configured
 
-![screenshot_2024-02-29_23.36.03.png](../assets/screenshot_2024-02-29_23.36.03.png)
+![screenshot-tbd.png]
 
 ## Part 2 Create Tanzu Application Service Infra definition
 - Click `Environments`
@@ -196,10 +196,10 @@ my_tas_dev
 Part 6 - Conclusion
 ===
 
-- You have successfully completed creating different connectors in Harness to connect with a Code Repo, a Container Registry and a Kubernetes Cluster
+- You have successfully completed configured a TAS application and infra definition and deployed using blue green strategy.
 - We will leverage these connectors to build our pipelines in the journey ahead
 
-![screenshot_2024-03-01_10.22.09.png](../assets/screenshot_2024-03-01_10.22.09.png)
+![screenshot-tbd.png]
 
 ---
 > 📍 **NOTE**  \
