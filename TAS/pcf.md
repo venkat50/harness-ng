@@ -11,7 +11,8 @@ mv cf7 /usr/local/bin/cf
 
 - Harness Artifactory connection needs to be automated 
 - Customer doesnt need to do this
-- https://harness.jfrog.io/
+- my_harnessartifactory
+- https://harness.jfrog.io/artifactory
 - annonymous credentials
 
 ## Part 1 Create Tanzu Application Service Connector
@@ -42,7 +43,7 @@ my_tas_connector
 labuser
 ```
 - Password: Click `Create or Select a Secret`
-- Select Secret: `my_tas_password`
+- Select Secret: `my_tas_secret`
 - Click `Continue`
 - Connect to the provider: `Connect through a Harness Delegate`
 - Click Save and Continue
@@ -56,16 +57,16 @@ labuser
 
 ## Part 2 Create Tanzu Application Service Infra definition
 - Click `Environments`
-- Click `dev`
+- Click `mydevenv`
 - Click `Infrastructure Definitions`
 - Click `+ Infrastructure Definition`
 - Name:
 ```
-my_tas_dev
+mytasdevinfra
 ```
 - Click `Tanzu Application Service`
 - Click `Connector`
-- Select `my_tas_connector`
+- Select `mytasconnector`
 - Click `Apply Selected`
 - Click `Organization`
 - Select `venkat-org`
@@ -78,7 +79,7 @@ my_tas_dev
 - Click `New Service`
 - Name:
 ```
-my_tas_service
+mytasservice
 ```
 - Click `Save`
 - Click `Tanzu Application Services`
@@ -90,7 +91,7 @@ my_tas_service
 - Click `Continue`
 - Manifest Identifier:
 ```
-my_tas_manifest
+mytasmanifest
 ```
 - Repository Name
 ```
@@ -102,12 +103,12 @@ main
 ```
 - File/Folder Path
 ```
-TAS/DEV
+deployment/dev/manifest.yaml
 ```
 - Click `+ Add File` to add Vars.yaml
 - Vars.yaml
 ```
-TAS/DEV/vars.yaml
+deployment/dev/vars.yaml
 ```
 - Click `Submit`
 - Click `Save`
