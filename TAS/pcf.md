@@ -95,7 +95,7 @@ mytasmanifest
 ```
 - Repository Name
 ```
-my-tas-service
+my-tas-service.git
 ```
 - Branch
 ```
