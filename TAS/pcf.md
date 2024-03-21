@@ -11,7 +11,7 @@ mv cf7 /usr/local/bin/cf
 
 - Harness Artifactory connection needs to be automated 
 - Customer doesnt need to do this
-- my_harnessartifactory
+- myharnessartifactory
 - https://harness.jfrog.io/artifactory
 - annonymous credentials
 
@@ -27,7 +27,7 @@ mv cf7 /usr/local/bin/cf
 ---
 - Name:
 ```
-my_tas_connector
+mytasconnector
 ```
 - Click `Continue`
 ![screenshot-tbd.png]
@@ -43,7 +43,7 @@ my_tas_connector
 labuser
 ```
 - Password: Click `Create or Select a Secret`
-- Select Secret: `my_tas_secret`
+- Select Secret: `mytassecret`
 - Click `Continue`
 - Connect to the provider: `Connect through a Harness Delegate`
 - Click Save and Continue
@@ -126,7 +126,7 @@ harness-artifactory
 - Click `Continue`
 - Artifact Source Identifier:
 ```
-my_sample_artifact
+mysampleartifact
 ```
 - Repository Format
 ```
@@ -154,13 +154,13 @@ demo/sample-app/*/*.zip
 - Click `Create Pipeline`
 - Name:
 ```
-my_tas_bg_pipeline
+mytasbgpipeline
 ```
 - Click `Start`
 - Add a new stage of type `Deploy`
 - Stage Name:
 ```
-my_dev_deployment
+mydevdeployment
 ```
 - Deployment Type: `Tanzu Application Services`
 - Click `Set Up Stage`
@@ -179,7 +179,7 @@ Part 5 - Execute Pipeline and review
 
 - Select service 
 ```
-my_tas_service
+mytasservice
 ```
 - Artifact Path
 ```
