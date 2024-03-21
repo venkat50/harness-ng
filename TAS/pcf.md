@@ -95,7 +95,7 @@ mytasmanifest
 ```
 - Repository Name
 ```
-harness-ng
+my-tas-service
 ```
 - Branch
 ```
@@ -120,7 +120,7 @@ deployment/dev/vars.yaml
 - Click `Continue`
 - Artifactory Connector
 ```
-harness-artifactory
+myharnessartifactory
 ```
 - Click `Apply Selected`
 - Click `Continue`
@@ -187,12 +187,12 @@ demo/sample-app/1.0.0/sample-app-1.0.0.zip
 ```
 - Specify Environment
 ```
-dev
+mydevenv
 ```
 - Click `Apply Selected`
 - Specify Infrastructure
 ```
-my_tas_dev
+mytasdevinfra
 ```
 - Run Pipeline
 
