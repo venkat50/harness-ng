@@ -104,8 +104,8 @@ mytasservice
 - Click `+ Add Manifest`
 - Click `TAS Manifest`
 - Click `Continue`
-- Select `GitHub`
-- Select `GitHub Connector`
+- Select `Git`
+- Select `mycoderepoconnector`
 - Click `Continue`
 - Manifest Identifier:
 ```
@@ -136,10 +136,7 @@ deployment/dev/vars.yaml
 - Click `Add Artifact Source`
 - Artifact Repository Type: `Artifactory`
 - Click `Continue`
-- Artifactory Connector
-```
-myharnessartifactory
-```
+- Artifactory Connector: `myharnessartifactory`
 - Click `Apply Selected`
 - Click `Continue`
 - Artifact Source Identifier:
@@ -184,7 +181,9 @@ mydevdeployment
 - Deployment Type: `Tanzu Application Services`
 - Click `Set Up Stage`
 - Select Service: `Runtime input`
+- Click `Continue`
 - Specify Environment: `Runtime input`
+- Click `Continue`
 - Select `Blue Green`
 - Click `Use Strategy`
 - Execution Tab will show the `BG App Setup` Step
