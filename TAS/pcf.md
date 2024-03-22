@@ -10,9 +10,24 @@ Part 1 - Artifactory Connector
 ===
 
 - From the [button label="Harness UI" variant="success"](tab-1) tab, navigate to: `Project Settings > Project Level Resources > Connectors`
-- myharnessartifactory
-- https://harness.jfrog.io/artifactory
-- annonymous credentials
+- Click `New Connector`
+- Search `Artifactory`
+- Click `Aritfactory`
+---
+- Name:
+```
+myharnessartifactory
+```
+- Artifactory Repository URL
+```
+https://harness.jfrog.io/artifactory
+```
+- Authentication: Annonymous (no credentials required)
+- Click `Continue`
+- Connect to the provider: `Connect through a Harness Delegate`
+- Click Save and Continue
+- Click Finish
+- `Artifactory connector` has been successfully configured
 
 Part 2 - Create TAS Connector
 ===
@@ -70,7 +85,7 @@ mytasdevinfra
 - Select `mytasconnector`
 - Click `Apply Selected`
 - Click `Organization`
-- Select `venkat-org`
+- Select `my-org`
 - Click `Space`
 - Select `dev`
 - Click `Save`
