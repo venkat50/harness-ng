@@ -1,28 +1,28 @@
-# Setup Delegate
 
-- Install cf v7 cli in the delegate
-- curl -L "https://packages.cloudfoundry.org/stable?release=linux64-binary&version=v7&source=github" | tar -zx
-mv cf7 /usr/local/bin/cf
-- This is already automated using terraform and is for informational purpose only.
+> 🚀 **START**  \
+> Instructions on TAS
 
-# Setup Connectors
+--------
 
-## Artifactory Connector
 
-- Harness Artifactory connection needs to be automated 
-- Customer doesnt need to do this
+
+Part 1 - Artifactory Connector
+===
+
+- From the [button label="Harness UI" variant="success"](tab-1) tab, navigate to: `Project Settings > Project Level Resources > Connectors`
 - myharnessartifactory
 - https://harness.jfrog.io/artifactory
 - annonymous credentials
 
-## Part 1 Create Tanzu Application Service Connector
+Part 2 - Create TAS Connector
+===
 
-
+- From the [button label="Harness UI" variant="success"](tab-1) tab, navigate to: `Project Settings > Project Level Resources > Connectors`
 - Click `New Connector`
 - Search `Tanzu`
 - Click `Tanzu Application Service`
-  
-![screenshot-tbd.png]
+
+
 
 ---
 - Name:
@@ -30,7 +30,7 @@ mv cf7 /usr/local/bin/cf
 mytasconnector
 ```
 - Click `Continue`
-![screenshot-tbd.png]
+
 
 ---
 
@@ -53,9 +53,10 @@ labuser
 - Click Finish
 - `TAS connector` has been successfully configured
 
-![screenshot-tbd.png]
+Part 3 - Create TAS Infra definition
+===
 
-## Part 2 Create Tanzu Application Service Infra definition
+- From the [button label="Harness UI" variant="success"](tab-1) tab, navigate to: `Project Settings > Project Level Resources > Environments`
 - Click `Environments`
 - Click `mydevenv`
 - Click `Infrastructure Definitions`
@@ -74,7 +75,9 @@ mytasdevinfra
 - Select `dev`
 - Click `Save`
 
-## Part 3 Create Harness Service
+Part 4 - Create TAS Service
+===
+- From the [button label="Harness UI" variant="success"](tab-1) tab, navigate to: `Project Settings > Project Level Resources > Services`
 - Click `Service`
 - Click `New Service`
 - Name:
@@ -112,7 +115,7 @@ deployment/dev/vars.yaml
 ```
 - Click `Submit`
 - Click `Save`
-  
+
 ---
 
 - Click `Add Artifact Source`
@@ -144,13 +147,14 @@ demo/sample-app/*/*.zip
 ```
 <+input>
 ```
-- Click `Submit` 
+- Click `Submit`
 
 - Click `Save`
 
-## Part 3 Create Harness Pipeline
+Part 5 - Create TAS Blue Green Pipeline
+===
 
-# Create Pipeline
+- From the [button label="Harness UI" variant="success"](tab-1) tab, navigate to: `Pipelines`
 - Click `Create Pipeline`
 - Name:
 ```
@@ -172,12 +176,10 @@ mydevdeployment
 - Click `Save`
 - Click `Run`
 
---- 
-Part 5 - Execute Pipeline and review
-- Click on run pipeline and review
-- Review logs and input output variables for each stage
+Part 6 - Execute Pipeline and Review
+===
 
-- Select service 
+- Select service
 ```
 mytasservice
 ```
@@ -194,17 +196,15 @@ mydevenv
 ```
 mytasdevinfra
 ```
-- Run Pipeline
 
+- Click on run pipeline
+- Review logs and input output variables for each stage
 
-
-Part 6 - Conclusion
+Part 7 - Conclusion
 ===
 
 - You have successfully completed configured a TAS application and infra definition and deployed using blue green strategy.
 - We will leverage these connectors to build our pipelines in the journey ahead
-
-![screenshot-tbd.png]
 
 ---
 > 📍 **NOTE**  \
@@ -215,3 +215,10 @@ Part 6 - Conclusion
 - What should be the scope of the connectors - Account, Organization or Project?
 - How would you map TAS Organization to corresponding Harness Entities - Organization or Project?
 - What is the desired topology for Environment and Infra Definition?
+
+---
+> ✅ **CONGRATULATIONS !!!**  \
+> Please type 'next' in the [button label="MyLocalServer" variant="success"](tab-7) tab to continue.
+> ```bash,run
+> next
+> ```
