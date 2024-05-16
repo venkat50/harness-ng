@@ -1,0 +1,126 @@
+pipeline:
+  name: ansible_demo
+  identifier: ansible_demo
+  projectIdentifier: ACME
+  orgIdentifier: DEMO
+  tags: {}
+  stages:
+    - stage:
+        name: deploy
+        identifier: deploy
+        description: ""
+        type: Deployment
+        spec:
+          deploymentType: CustomDeployment
+          customDeploymentRef:
+            templateRef: ansible
+            versionLabel: v1
+          service:
+            serviceRef: <+input>
+            serviceInputs: <+input>
+          execution:
+            steps:
+              - step:
+                  name: Fetch Instances
+                  identifier: fetchInstances
+                  type: FetchInstanceScript
+                  timeout: 10m
+                  spec: {}
+              - step:
+                  type: ShellScript
+                  name: print vars
+                  identifier: ShellScript_1
+                  spec:
+                    shell: Bash
+                    executionTarget: {}
+                    source:
+                      type: Inline
+                      spec:
+                        script: |-
+                          echo <+infra.variables.target>
+                          echo <+infra.variables.target.spec.hosts[0].hostname>
+                          echo <+infra.variables.target.spec.hosts[0].hostAttributes.email>
+                          echo <+infra.variables.target.spec.hosts[0].hostAttributes.location>
+                          echo <+infra.variables.target.type>
+                          echo <+infra.variables.inventory_source>
+                          echo <+stage.output.hosts>
+                    environmentVariables: []
+                    outputVariables: []
+                  timeout: 10m
+              - stepGroup:
+                  name: run_ansible
+                  identifier: run_ansible
+                  steps:
+                    - step:
+                        type: GitClone
+                        name: GitClone
+                        identifier: GitClone
+                        spec:
+                          connectorRef: hello
+                          repoName: hello-world
+                          build:
+                            type: branch
+                            spec:
+                              branch: master
+                    - step:
+                        type: Run
+                        name: Run
+                        identifier: Run
+                        spec:
+                          connectorRef: org.Docker
+                          image: alpinelinux/ansible
+                          shell: Sh
+                          command: |-
+                            ls -lart /tmp
+
+                            mkdir -p /tmp/sammy
+                            chmod -R 777 /tmp/sammy
+
+                            cat <<_EOF_ > inventory.txt
+                            [<+infra.name>]
+                            <+instance.name>
+                            _EOF_
+
+                            ansible-playbook /harness/hello-world/pb-01.yaml --connection=local -i inventory.txt | tee playbook.log
+
+                            status=$(sed -n -e '/PLAY RECAP/,$p' playbook.log | sed 1d | sed -e 's/^localhost.*ok/ok/')
+
+                            echo $status
+                            eval $status
+
+                            OK=$ok
+                            CHANGED=$changed
+                            FAILED=$failed
+                            SKIPPED=$skipped
+                          outputVariables:
+                            - name: OK
+                            - name: CHANGED
+                            - name: FAILED
+                            - name: SKIPPED
+                        strategy:
+                          repeat:
+                            items: <+stage.output.hosts>
+                            nodeName: app_<+repeat.item>
+                  sharedPaths:
+                    - /workspace
+                  stepGroupInfra:
+                    type: KubernetesDirect
+                    spec:
+                      connectorRef: k3ssa
+                      namespace: harness-demo
+                  when:
+                    stageStatus: Success
+            rollbackSteps: []
+          environment:
+            environmentRef: <+input>
+            deployToAll: false
+            environmentInputs: <+input>
+            serviceOverrideInputs: <+input>
+            infrastructureDefinitions: <+input>
+        tags: {}
+        failureStrategies:
+          - onFailure:
+              errors:
+                - AllErrors
+              action:
+                type: StageRollback
