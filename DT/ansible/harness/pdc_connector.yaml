@@ -1,0 +1,14 @@
+connector:
+  name: acme
+  identifier: acme
+  description: ""
+  accountIdentifier: 1234567
+  orgIdentifier: DEMO
+  projectIdentifier: ACME
+  type: Pdc
+  spec:
+    hosts:
+      - hostname: localhost
+        hostAttributes:
+          email: venkat@harness.io
+          location: US
