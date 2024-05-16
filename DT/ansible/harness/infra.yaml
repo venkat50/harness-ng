@@ -1,0 +1,29 @@
+infrastructureDefinition:
+  name: appservers
+  identifier: appservers
+  orgIdentifier: DEMO
+  projectIdentifier: ACME
+  environmentRef: DEV
+  deploymentType: CustomDeployment
+  type: CustomDeployment
+  spec:
+    customDeploymentRef:
+      templateRef: ansible
+      versionLabel: v1
+    variables:
+      - name: inventory_source
+        type: String
+        value: <+serviceVariables.inventory_source>
+        description: ""
+        required: false
+      - name: inventory
+        type: String
+        value: <+serviceVariables.inventory>
+        description: ""
+        required: false
+      - name: target
+        type: Connector
+        value: <+input>
+        description: ""
+        required: false
+  allowSimultaneousDeployments: false
