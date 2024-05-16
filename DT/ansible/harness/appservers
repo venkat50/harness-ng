@@ -1,0 +1,11 @@
+{
+    "name": "<+serviceVariables.APP_NAME>",
+    "id"  : "<+serviceVariables.APP_ID>",
+    "server": "server3"
+},
+{
+    "name": "<+serviceVariables.APP_NAME>",
+    "id"  : "<+serviceVariables.APP_ID>",
+    "server": "server7"
+}
+
