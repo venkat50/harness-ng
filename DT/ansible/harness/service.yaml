@@ -1,0 +1,40 @@
+service:
+  name: payment_service
+  identifier: payment_service
+  orgIdentifier: DEMO
+  projectIdentifier: ACME
+  serviceDefinition:
+    spec:
+      customDeploymentRef:
+        templateRef: ansible
+        versionLabel: v1
+      variables:
+        - name: inventory_source
+          type: String
+          description: ""
+          required: false
+          value: filestore
+        - name: inventory
+          type: String
+          description: ""
+          required: false
+          value: /<+env.name>/<+infra.name>
+        - name: APP_ID
+          type: String
+          description: ""
+          required: false
+          value: A001
+        - name: APP_NAME
+          type: String
+          description: ""
+          required: false
+          value: commercial
+      artifacts:
+        primary:
+          primaryArtifactRef: artifact_registry
+          sources:
+            - identifier: artifact_registry
+              spec:
+                version: <+input>
+              type: CustomArtifact
+    type: CustomDeployment
