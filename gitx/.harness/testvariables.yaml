@@ -1,0 +1,93 @@
+pipeline:
+  name: test-variables
+  identifier: testvariables
+  projectIdentifier: sample
+  orgIdentifier: default
+  tags: {}
+  stages:
+    - stage:
+        name: test
+        identifier: test
+        description: ""
+        type: Deployment
+        spec:
+          deploymentType: Kubernetes
+          service:
+            serviceRef: nginx
+            serviceInputs:
+              serviceDefinition:
+                type: Kubernetes
+                spec:
+                  artifacts:
+                    primary:
+                      primaryArtifactRef: <+input>
+                      sources: <+input>
+          environment:
+            environmentRef: Dev
+            deployToAll: false
+            infrastructureDefinitions:
+              - identifier: k3ssa
+          execution:
+            steps:
+              - step:
+                  type: ShellScript
+                  name: ShellScript_1
+                  identifier: ShellScript_1
+                  spec:
+                    shell: Bash
+                    executionTarget: {}
+                    source:
+                      type: Inline
+                      spec:
+                        script: |+
+                          cat <<_EOF_
+                          tag= <+artifacts.primary.tag>                       
+                          image= <+artifacts.primary.image>
+                          image_without_tag = <+<+artifacts.primary.image>.split(':')[0]>                       
+                          imagePath= <+artifacts.primary.imagePath>                 
+                          type: <+artifacts.primary.type>                      
+                          connectorRef: <+artifacts.primary.connectorRef> 
+                          _EOF_ 
+
+                          cat <<_EOF_
+                          chartName= "<+manifests.bitnami.chartName>"
+                          <+manifests.bitnami.store.basePath>
+                          <+manifests.bitnami.helm.metadata.url>
+                          <+manifests.bitnami.helm.metadata.branch>
+                          _EOF_
+
+
+                    environmentVariables: []
+                    outputVariables: []
+                  timeout: 10m
+                  when:
+                    stageStatus: Success
+                    condition: "false"
+              - step:
+                  type: ShellScript
+                  name: display service list
+                  identifier: display_service_list
+                  spec:
+                    shell: Bash
+                    executionTarget: {}
+                    source:
+                      type: Inline
+                      spec:
+                        script: |-
+                          cat <<_EOF_ > /tmp/service2.txt
+                          <+fileStore.getAsString("org:/service-list")>
+                          _EOF_
+
+                          cat /tmp/service2.txt
+                          grep service2 /tmp/service2.txt
+                    environmentVariables: []
+                    outputVariables: []
+                  timeout: 10m
+            rollbackSteps: []
+        tags: {}
+        failureStrategies:
+          - onFailure:
+              errors:
+                - AllErrors
+              action:
+                type: StageRollback
