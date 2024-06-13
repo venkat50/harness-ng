@@ -1,0 +1,70 @@
+template:
+  name: ansible
+  identifier: ansible
+  versionLabel: v1
+  type: CustomDeployment
+  projectIdentifier: ACME
+  orgIdentifier: DEMO
+  tags: {}
+  spec:
+    infrastructure:
+      variables:
+        - name: inventory_source
+          type: String
+          value: <+serviceVariables.inventory_source>
+          description: ""
+          required: false
+        - name: inventory
+          type: String
+          value: <+serviceVariables.inventory>
+          description: ""
+          required: false
+        - name: target
+          type: Connector
+          value: <+input>
+          description: ""
+          required: false
+      fetchInstancesScript:
+        store:
+          type: Inline
+          spec:
+            content: |+
+              #
+              # Script is expected to query Infrastructure and dump json
+              # in $INSTANCE_OUTPUT_PATH file path
+              #
+              # Harness is expected to initialize ${INSTANCE_OUTPUT_PATH}
+              # environment variable - a random unique file path on delegate,
+              # so script execution can save the result.
+              #
+
+              cat <<'_EOF_' > ${INSTANCE_OUTPUT_PATH}
+              {
+                  "data": []
+              }
+              _EOF_
+
+              if [[ "<+infra.variables.inventory_source>" == "filestore" ]]; then
+                  cat <<'_EOF_' > ${INSTANCE_OUTPUT_PATH}
+                  {"data": [
+                    <+fileStore.getAsString("<+infra.variables.inventory>")>
+                  ]}
+              _EOF_
+              fi
+
+
+
+
+      instanceAttributes:
+        - name: instancename
+          jsonPath: server
+          description: ""
+        - name: app_id
+          jsonPath: id
+          description: ""
+        - name: name
+          jsonPath: name
+          description: ""
+      instancesListPath: data
+    execution:
+      stepTemplateRefs: []

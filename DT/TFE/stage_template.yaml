@@ -1,0 +1,237 @@
+template:
+  name: TFE_STAGE
+  type: Stage
+  projectIdentifier: sample
+  orgIdentifier: default
+  spec:
+    type: Deployment
+    spec:
+      deploymentType: CustomDeployment
+      customDeploymentRef:
+        templateRef: TFE
+        versionLabel: v1
+      service:
+        serviceRef: tfeservice
+        serviceInputs:
+          serviceDefinition:
+            type: CustomDeployment
+            spec:
+              artifacts:
+                primary:
+                  sources:
+                    - identifier: tfe
+                      type: CustomArtifact
+                      spec:
+                        version: <+input>
+      execution:
+        steps:
+          - step:
+              type: HarnessApproval
+              name: Approval
+              identifier: Approval
+              spec:
+                approvalMessage: Please review the following information and approve the pipeline progression
+                includePipelineExecutionHistory: true
+                isAutoRejectEnabled: false
+                approvers:
+                  userGroups:
+                    - account._account_all_users
+                  minimumCount: 1
+                  disallowPipelineExecutor: false
+                approverInputs: []
+              timeout: 1d
+              when:
+                stageStatus: Success
+                condition: <+env.type> == "Production"
+          - step:
+              name: Fetch Instances
+              identifier: fetchInstances
+              type: FetchInstanceScript
+              timeout: 10m
+              spec: {}
+          - step:
+              type: ShellScript
+              name: display variables
+              identifier: display_variables
+              spec:
+                shell: Bash
+                executionTarget: {}
+                source:
+                  type: Inline
+                  spec:
+                    script: |+
+                      echo <+env.name>
+                      echo <+env.type>
+                      echo <+infra.name>
+                      echo <+infra.variables.APP_ID>
+                      echo <+infra.variables.ORG>
+                      echo <+infra.variables.WORKSPACE>
+                      echo <+infra.variables.HOST>
+                      echo <+infra.variables.TOKEN>
+
+
+
+
+                environmentVariables: []
+                outputVariables: []
+              timeout: 10m
+          - step:
+              type: CustomApproval
+              name: gauntlet scan
+              identifier: gauntlet_scan
+              spec:
+                rejectionCriteria:
+                  type: KeyValues
+                  spec:
+                    matchAnyCondition: true
+                    conditions:
+                      - key: decision
+                        operator: not equals
+                        value: approved
+                approvalCriteria:
+                  type: KeyValues
+                  spec:
+                    matchAnyCondition: false
+                    conditions:
+                      - key: decision
+                        operator: equals
+                        value: approved
+                scriptTimeout: 2m
+                retryInterval: 5m
+                shell: Bash
+                onDelegate: true
+                source:
+                  type: Inline
+                  spec:
+                    script: |-
+                      #
+                      # Specify output variables in the step and these
+                      # variables should be used for setting up the approval 
+                      # and rejection criteria.
+                      #
+
+                      decision="approved"
+                environmentVariables: []
+                outputVariables:
+                  - name: decision
+                    type: String
+                    value: decision
+              timeout: 2m
+              failureStrategies:
+                - onFailure:
+                    errors:
+                      - AllErrors
+                    action:
+                      type: Retry
+                      spec:
+                        retryCount: 1
+                        retryIntervals:
+                          - 10s
+                        onRetryFailure:
+                          action:
+                            type: MarkAsFailure
+          - stepGroup:
+              name: "terraform "
+              identifier: terraform
+              steps:
+                - step:
+                    type: GitClone
+                    name: GitClone
+                    identifier: GitClone
+                    spec:
+                      connectorRef: account.venkat50
+                      repoName: hello-world
+                      cloneDirectory: /harness/hello-world
+                      resources:
+                        limits:
+                          memory: 100Mi
+                          cpu: 100m
+                      build:
+                        type: branch
+                        spec:
+                          branch: master
+                - step:
+                    type: Run
+                    name: setup
+                    identifier: setup
+                    spec:
+                      connectorRef: harnessDockerHub
+                      image: alpine
+                      shell: Sh
+                      command: |-
+                        cat <<_EOF_ > /workspace/credentials.tfrc.json
+                        <+configFile.getAsString("credentials")>
+                        _EOF_
+
+
+                        cat <<_EOF_ > /workspace/_override.tf
+                        <+fileStore.getAsString("/TFE/override.tf")>
+                        _EOF_
+                      resources:
+                        limits:
+                          memory: 100Mi
+                          cpu: 100m
+                - step:
+                    type: Run
+                    name: plan
+                    identifier: plan
+                    spec:
+                      connectorRef: harnessDockerHub
+                      image: alpine
+                      shell: Sh
+                      command: |-
+                        mkdir -p $HOME/.terraform.d
+                        cp /workspace/_override.tf $HOME/_override.tf
+                        cat $HOME/_override.tf
+                        echo terraform plan
+                      resources:
+                        limits:
+                          memory: 100Mi
+                          cpu: 100m
+                - step:
+                    type: Run
+                    name: apply
+                    identifier: apply
+                    spec:
+                      connectorRef: harnessDockerHub
+                      image: alpine
+                      shell: Sh
+                      command: |-
+                        mkdir -p $HOME/.terraform.d
+                        cp /workspace/_override.tf $HOME/_override.tf
+                        cat $HOME/_override.tf
+
+                        cat $HOME/_override.tf
+                        echo terraform apply
+                      resources:
+                        limits:
+                          memory: 100Mi
+                          cpu: 100m
+              sharedPaths:
+                - /workspace
+              stepGroupInfra:
+                type: KubernetesDirect
+                spec:
+                  connectorRef: k3ssa
+                  namespace: harness-demo
+        rollbackSteps: []
+      environment:
+        environmentRef: <+input>
+        deployToAll: false
+        environmentInputs: <+input>
+        serviceOverrideInputs: <+input>
+        infrastructureDefinitions: <+input>
+    failureStrategies:
+      - onFailure:
+          errors:
+            - AllErrors
+          action:
+            type: StageRollback
+    variables:
+      - name: branch
+        type: String
+        description: ""
+        required: false
+        value: <+input>.allowedValues(dev,test,release)
+  identifier: TFE_STAGE
+  versionLabel: v1

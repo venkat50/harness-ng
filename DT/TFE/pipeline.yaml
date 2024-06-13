@@ -1,0 +1,99 @@
+pipeline:
+  name: tfe-demo
+  identifier: tfedemo
+  projectIdentifier: sample
+  orgIdentifier: default
+  tags: {}
+  stages:
+    - stage:
+        name: DEV
+        identifier: DEV
+        tags: {}
+        template:
+          templateRef: TFE_STAGE
+          versionLabel: v1
+          templateInputs:
+            type: Deployment
+            spec:
+              service:
+                serviceInputs:
+                  serviceDefinition:
+                    type: CustomDeployment
+                    spec:
+                      artifacts:
+                        primary:
+                          sources:
+                            - identifier: tfe
+                              type: CustomArtifact
+                              spec:
+                                version: <+pipeline.variables.version>
+              environment:
+                environmentRef: dev
+                infrastructureDefinitions:
+                  - identifier: useast1
+                    inputs:
+                      identifier: useast1
+                      type: CustomDeployment
+                      spec:
+                        variables:
+                          - name: WORKSPACE
+                            type: String
+                            value: <+service.name>-ws
+            variables:
+              - name: branch
+                type: String
+                value: dev
+    - stage:
+        name: QA
+        identifier: QA
+        tags: {}
+        template:
+          templateRef: TFE_STAGE
+          versionLabel: v1
+          templateInputs:
+            type: Deployment
+            spec:
+              service:
+                serviceInputs:
+                  serviceDefinition:
+                    type: CustomDeployment
+                    spec:
+                      artifacts:
+                        primary:
+                          sources:
+                            - identifier: tfe
+                              type: CustomArtifact
+                              spec:
+                                version: <+pipeline.variables.version>
+              environment:
+                environmentRef: qa1
+                infrastructureDefinitions:
+                  - identifier: uswest1
+                    inputs:
+                      identifier: uswest1
+                      type: CustomDeployment
+                      spec:
+                        variables:
+                          - name: WORKSPACE
+                            type: String
+                            value: <+service.name>-ws
+            variables:
+              - name: branch
+                type: String
+                value: test
+  variables:
+    - name: APP_ID
+      type: String
+      description: ""
+      required: false
+      value: <+input>
+    - name: ORG
+      type: String
+      description: ""
+      required: false
+      value: <+input>
+    - name: version
+      type: String
+      description: ""
+      required: false
+      value: <+input>

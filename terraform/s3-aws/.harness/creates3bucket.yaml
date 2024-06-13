@@ -1,0 +1,43 @@
+pipeline:
+  name: create-s3-bucket
+  identifier: creates3bucket
+  projectIdentifier: ACME
+  orgIdentifier: DEMO
+  tags: {}
+  stages:
+    - stage:
+        name: custom
+        identifier: custom
+        description: ""
+        type: Custom
+        spec:
+          execution:
+            steps:
+              - step:
+                  type: TerraformApply
+                  name: TerraformApply
+                  identifier: TerraformApply
+                  spec:
+                    provisionerIdentifier: v1
+                    configuration:
+                      type: Inline
+                      spec:
+                        configFiles:
+                          store:
+                            spec:
+                              connectorRef: account.venkat50
+                              repoName: harness-ng
+                              gitFetchType: Branch
+                              branch: main
+                              folderPath: terraform/s3-aws
+                            type: Github
+                        providerCredential:
+                          type: Aws
+                          spec:
+                            connectorRef: awscs
+                            region: us-east-1
+                            roleArn: ""
+                  timeout: 10m
+        tags: {}
+  delegateSelectors:
+    - aws-delegate

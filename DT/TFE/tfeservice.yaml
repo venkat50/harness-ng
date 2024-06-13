@@ -1,0 +1,39 @@
+service:
+  name: tfeservice
+  identifier: tfeservice
+  orgIdentifier: default
+  projectIdentifier: sample
+  serviceDefinition:
+    spec:
+      customDeploymentRef:
+        templateRef: TFE
+        versionLabel: v1
+      variables:
+        - name: APP_ID
+          type: String
+          description: ""
+          required: false
+          value: <+pipeline.variables.APP_ID>
+        - name: ORG
+          type: String
+          description: ""
+          required: false
+          value: <+pipeline.variables.ORG>
+      configFiles:
+        - configFile:
+            identifier: credentials
+            spec:
+              store:
+                type: Harness
+                spec:
+                  files:
+                    - /TFE/credentials.tfrc.json
+      artifacts:
+        primary:
+          primaryArtifactRef: tfe
+          sources:
+            - identifier: tfe
+              spec:
+                version: <+input>
+              type: CustomArtifact
+    type: CustomDeployment

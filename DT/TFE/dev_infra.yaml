@@ -1,0 +1,41 @@
+infrastructureDefinition:
+  name: us-east-1
+  identifier: useast1
+  orgIdentifier: default
+  projectIdentifier: sample
+  environmentRef: dev
+  deploymentType: CustomDeployment
+  type: CustomDeployment
+  spec:
+    customDeploymentRef:
+      templateRef: TFE
+      versionLabel: v1
+    variables:
+      - name: APP_ID
+        type: String
+        value: <+serviceVariables.APP_ID>
+        description: ""
+        required: false
+      - name: WORKSPACE
+        type: String
+        value: <+input>
+        description: TFE workspace
+        required: false
+      - name: TOKEN
+        type: String
+        value: <+env.variables.token>
+        description: Auth Token
+        required: false
+      - name: ORG
+        type: String
+        value: <+serviceVariables.ORG>
+        description: ""
+        required: false
+      - name: HOST
+        type: String
+        value: app.terraform.io
+        description: ""
+        required: false
+  allowSimultaneousDeployments: false
+  scopedServices:
+    - tfeservice

@@ -1,0 +1,37 @@
+infrastructureDefinition:
+  name: us-west-1
+  identifier: uswest1
+  orgIdentifier: default
+  projectIdentifier: sample
+  environmentRef: qa1
+  deploymentType: CustomDeployment
+  type: CustomDeployment
+  spec:
+    customDeploymentRef:
+      templateRef: TFE
+      versionLabel: v1
+    variables:
+      - name: APP_ID
+        type: String
+        value: <+serviceVariables.APP_ID>
+        description: ""
+        required: false
+      - name: WORKSPACE
+        type: String
+        value: <+input>
+        description: TFE workspace
+        required: false
+      - name: TOKEN
+        type: String
+        value: <+env.variables.token>
+        description: Auth Token
+        required: false
+      - name: ORG
+        type: String
+        value: <+serviceVariables.ORG>
+      - name: HOST
+        type: String
+        value: app.terraform.io
+        description: ""
+        required: false
+  allowSimultaneousDeployments: false

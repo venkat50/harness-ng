@@ -1,0 +1,65 @@
+template:
+  name: TFE
+  identifier: TFE
+  versionLabel: v1
+  type: CustomDeployment
+  projectIdentifier: sample
+  orgIdentifier: default
+  tags: {}
+  spec:
+    infrastructure:
+      variables:
+        - name: APP_ID
+          type: String
+          value: <+input>
+          description: ""
+          required: false
+        - name: WORKSPACE
+          type: String
+          value: <+input>
+          description: TFE workspace
+          required: false
+        - name: TOKEN
+          type: String
+          value: <+input>
+          description: Auth Token
+          required: false
+        - name: ORG
+          type: String
+          value: <+input>
+          description: ""
+          required: false
+        - name: HOST
+          type: String
+          value: app.terraform.io
+          description: ""
+          required: false
+      fetchInstancesScript:
+        store:
+          type: Inline
+          spec:
+            content: |-
+              #
+              # Script is expected to query Infrastructure and dump json
+              # in $INSTANCE_OUTPUT_PATH file path
+              #
+              # In this example, json contains a single attribute. 
+              # Additional attributes can be defined and accessed from within pipeline and displayed in the overview.
+              #
+              cat <<_EOF_ > ${INSTANCE_OUTPUT_PATH}
+              {
+                  "data": [
+                      {
+                          "ws": "<+infra.variables.WORKSPACE>"
+                      }
+                  ]
+              }
+              _EOF_
+      instanceAttributes:
+        - name: instancename
+          jsonPath: ws
+          description: Terraform Workspace Name
+      instancesListPath: data
+    execution:
+      stepTemplateRefs: []
+  description: "Demonstrate use of Deployment Template to implement custom TFE pipelines. This is a simple template to show how to leverage various features of Harness Platform. "
