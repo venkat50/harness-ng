@@ -73,15 +73,13 @@ pipeline:
                     source:
                       type: Inline
                       spec:
-                        script: |-
+                        script: |
                           cat <<_EOF_ > /tmp/service2.txt
                           <+fileStore.getAsString("org:/service-list")>
                           _EOF_
 
                           cat /tmp/service2.txt
                           grep service2 /tmp/service2.txt
-
-                          echo "Test"
                     environmentVariables: []
                     outputVariables: []
                   timeout: 10m
