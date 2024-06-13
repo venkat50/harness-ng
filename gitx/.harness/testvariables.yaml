@@ -80,6 +80,8 @@ pipeline:
 
                           cat /tmp/service2.txt
                           grep service2 /tmp/service2.txt
+
+                          echo "Test"
                     environmentVariables: []
                     outputVariables: []
                   timeout: 10m
