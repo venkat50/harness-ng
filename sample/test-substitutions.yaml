@@ -1,0 +1,115 @@
+pipeline:
+  name: test-substitutions
+  identifier: testsubstitutions
+  projectIdentifier: sample
+  orgIdentifier: default
+  tags: {}
+  stages:
+    - stage:
+        name: custom
+        identifier: custom
+        description: ""
+        type: Custom
+        spec:
+          execution:
+            steps:
+              - step:
+                  type: ShellScript
+                  name: use sed
+                  identifier: use_sed
+                  spec:
+                    shell: Bash
+                    executionTarget: {}
+                    source:
+                      type: Inline
+                      spec:
+                        script: |+
+                          cat <<_EOF_ > replace.scr
+                          s/@Name@/nginx/
+                          s/@Replicas@/4/
+                          s/@Image@/nginx:latest/
+                          s/@Port@/8080/
+                          _EOF_
+
+                          cat <<_EOF_ > manifest.yaml
+                          <+fileStore.getAsString("/App/test/sample2.yaml")>
+                          _EOF_
+
+                          sed -i -f replace.scr manifest.yaml
+
+                          cat manifest.yaml
+
+                    environmentVariables: []
+                    outputVariables: []
+                  timeout: 10m
+              - step:
+                  type: ShellScript
+                  name: Use here doc
+                  identifier: Use_here_doc
+                  spec:
+                    shell: Bash
+                    executionTarget: {}
+                    source:
+                      type: Inline
+                      spec:
+                        script: |-
+                          cat <<_EOF_ 
+                          *********************
+                          Project Name: $project_name
+                          Organization Name: $org_name
+                          Greeting; $greeting
+                          ***********************
+                          _EOF_
+                    environmentVariables:
+                      - name: project_name
+                        type: String
+                        value: <+project.name>
+                      - name: org_name
+                        type: String
+                        value: <+org.name>
+                      - name: greeting
+                        type: String
+                        value: <+pipeline.variables.greeting>
+                    outputVariables: []
+                  timeout: 10m
+              - step:
+                  type: ShellScript
+                  name: Use go text template
+                  identifier: Use_go_text_template
+                  spec:
+                    shell: Bash
+                    executionTarget: {}
+                    source:
+                      type: Inline
+                      spec:
+                        script: |-
+
+                          cat <<_EOF_ > Chart.yaml
+                          apiVersion: v2
+                          name: mychart
+                          version: 0.1.0
+                          _EOF_
+
+                          mkdir -p templates
+
+                          cat <<_EOF_ >templates/manifest.yaml
+                          <+fileStore.getAsString("/App/test/sample1.yaml")>
+                          _EOF_
+
+                          cat <<_EOF_ > values.yaml
+                          <+fileStore.getAsString("/App/test/values1.yaml")>
+                          _EOF_
+
+
+
+                          helm template . -s templates/manifest.yaml -f values.yaml
+                    environmentVariables: []
+                    outputVariables: []
+                  timeout: 10m
+        tags: {}
+  variables:
+    - name: greeting
+      type: String
+      description: ""
+      required: false
+      value: <+input>.default(hello world)
