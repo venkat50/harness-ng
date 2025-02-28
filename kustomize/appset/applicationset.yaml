@@ -19,10 +19,11 @@ spec:
         harness.io/serviceRef: '{{harness_service}}'
         harness.io/buildRef: '{{image_tag}}'
     spec:
+      project: bd0e5225
       source:
         repoURL: https://github.com/venkat50/harness-ng.git
         targetRevision: HEAD
-        path: "base"
+        path: kustomize/apps
         kustomize:
           namePrefix: '{{environment}}-'
           images:
