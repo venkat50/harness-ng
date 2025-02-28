@@ -1,6 +1,6 @@
 {
   "cluster_name" : "in-cluster",
-  "harness_service" : "GuestBook_UI",
+  "harness_service" : "argocd-guestbook",
   "environment" : "dev",
   "test" : "6",
   "server_address" : "https://kubernetes.default.svc",
