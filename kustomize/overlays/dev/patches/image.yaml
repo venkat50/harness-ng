@@ -1,10 +1,11 @@
-apiVersion: "apps/v1"
-kind: "Deployment"
 metadata:
   name: "harness-cv-prom-example-deployment"
+apiVersion: "apps/v1"
+kind: "Deployment"
 spec:
   template:
     spec:
       containers:
       - image: "rlachhman/cv-example-app:stable"
         name: "harness-cv-prom-example"
+token: "dev-token"
