@@ -1,0 +1,25 @@
+# Deployment and Service Manifest for Harness CV App Example
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: harness-cv-prom-example-deployment
+spec:
+  selector:
+    matchLabels:
+      app: harness-cv-prom-example
+  replicas: 1 
+  template:
+    metadata:
+      labels:
+        app: harness-cv-prom-example
+      annotations:
+        prometheus.io/scrape: 'true'
+        prometheus.io/path: "/actuator/prometheus"
+        prometheus.io/port: "8082"
+    spec:
+      containers:
+        - name: harness-cv-prom-example
+          image: {{.Values.image}}
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8082
