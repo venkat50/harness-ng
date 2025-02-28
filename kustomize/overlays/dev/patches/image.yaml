@@ -1,12 +1,10 @@
-newTag: "registry.hub.docker.com/rlachhman/cv-example-app:unstable"
-metadata:
-  name: "harness-cv-prom-example-deployment"
 apiVersion: "apps/v1"
 kind: "Deployment"
+metadata:
+  name: "harness-cv-prom-example-deployment"
 spec:
   template:
     spec:
       containers:
       - image: "rlachhman/cv-example-app:<+artifacts.primary.tag>"
         name: "harness-cv-prom-example"
-token: "dev-token"
