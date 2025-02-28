@@ -2,6 +2,7 @@
   "cluster_name" : "dev-cluster",
   "harness_service" : "GuestBook_UI",
   "environment" : "dev",
+  "test" : "6",
   "server_address" : "https://kubernetes.default.svc",
   "image_tag" : "0102-f76757c-573",
   "token" : "dev-token"
