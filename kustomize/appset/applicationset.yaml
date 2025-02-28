@@ -19,7 +19,6 @@ spec:
         harness.io/serviceRef: '{{harness_service}}'
         harness.io/buildRef: '{{image_tag}}'
     spec:
-      project: 207bda4a
       source:
         repoURL: https://github.com/venkat50/harness-ng.git
         targetRevision: HEAD
