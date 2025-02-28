@@ -6,5 +6,5 @@ spec:
   template:
     spec:
       containers:
-      - image: "rlachhman/cv-example-app:<+artifacts.primary.tag>"
+      - image: "rlachhman/cv-example-app:stable"
         name: "harness-cv-prom-example"
