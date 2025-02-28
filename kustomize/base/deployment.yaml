@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
         - name: harness-cv-prom-example
-          image: {{.Values.image}}
+          image: quay.io/redhatworkshops/welcome-php
           imagePullPolicy: Always
           ports:
             - containerPort: 8082
