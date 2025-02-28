@@ -1,0 +1,11 @@
+# Deployment and Service Manifest for Harness CV App Example
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: harness-cv-prom-example-deployment
+spec:
+  template:
+    spec:
+      containers:
+        - name: harness-cv-prom-example
+          image: rlachhman/cv-example-app:<+artifacts.primary.tag>
