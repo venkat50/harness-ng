@@ -7,4 +7,4 @@ spec:
     spec:
       containers:
         - name: harness-cv-prom-example
-          image: <+artifact.image>
+          image: rlachhman/cv-example-app:stable
