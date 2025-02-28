@@ -7,10 +7,10 @@ spec:
   goTemplateOptions: ["missingkey=error"]
   generators:
     - git:
-        repoURL: https://github.com/argoproj/argo-cd.git
+        repoURL: https://github.com/venkat50/harness-ng.git
         revision: HEAD
         files:
-        - path: "applicationset/examples/git-generator-files-discovery/cluster-config/**/config.json"
+        - path: "kustomize/cluster-config/**/config.json"
   template:
     metadata:
       name: '{{.cluster.name}}-guestbook'
@@ -19,7 +19,7 @@ spec:
       source:
         repoURL: https://github.com/argoproj/argo-cd.git
         targetRevision: HEAD
-        path: "applicationset/examples/git-generator-files-discovery/apps/guestbook"
+        path: "kustomize/apps"
       destination:
         server: https://kubernetes.default.svc
         #server: '{{.cluster.address}}'
