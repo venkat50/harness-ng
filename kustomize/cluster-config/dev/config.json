@@ -1,5 +1,5 @@
 {
-  "cluster_name" : "in-cluster",
+  "cluster_name" : "dev-cluster",
   "harness_service" : "argocd-guestbook",
   "environment" : "dev",
   "test" : "6",
