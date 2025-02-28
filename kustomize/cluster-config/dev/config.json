@@ -1,5 +1,5 @@
 {
-  "cluster_name" : "dev-cluster",
+  "cluster_name" : "in-cluster",
   "harness_service" : "GuestBook_UI",
   "environment" : "dev",
   "test" : "6",
