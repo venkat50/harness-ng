@@ -1,11 +1,12 @@
-# Deployment and Service Manifest for Harness CV App Example
-apiVersion: apps/v1
-kind: Deployment
+newTag: "registry.hub.docker.com/rlachhman/cv-example-app:unstable"
 metadata:
-  name: harness-cv-prom-example-deployment
+  name: "harness-cv-prom-example-deployment"
+apiVersion: "apps/v1"
+kind: "Deployment"
 spec:
   template:
     spec:
       containers:
-        - name: harness-cv-prom-example
-          image: rlachhman/cv-example-app:<+artifacts.primary.tag>
+      - image: "rlachhman/cv-example-app:<+artifacts.primary.tag>"
+        name: "harness-cv-prom-example"
+token: "dev-token"
