@@ -26,6 +26,8 @@ spec:
         path: kustomize/apps
         kustomize:
           namePrefix: '{{environment}}-'
+          images:
+          - mansong/guestbook:{{image_tag}}
       destination:
         server: '{{server_address}}'
         namespace: 'guestbook-{{environment}}'
