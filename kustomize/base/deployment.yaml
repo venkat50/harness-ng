@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
         - name: harness-cv-prom-example
-          image: rlachhman/cv-example-app:stable
+          image: rlachhman/cv-example-app:unstable
           imagePullPolicy: Always
           ports:
             - containerPort: 8082
