@@ -6,6 +6,6 @@ spec:
   template:
     spec:
       containers:
-      - image: "rlachhman/cv-example-app:stable"
+      - image: "rlachhman/cv-example-app:unstable"
         name: "harness-cv-prom-example"
 
