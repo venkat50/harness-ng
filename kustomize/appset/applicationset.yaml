@@ -22,7 +22,7 @@ spec:
       project: bd0e5225
       source:
         repoURL: https://github.com/venkat50/harness-ng.git
-        targetRevision: HEAD
+        targetRevision: main
         path: kustomize/apps
         kustomize:
           namePrefix: '{{environment}}-'
