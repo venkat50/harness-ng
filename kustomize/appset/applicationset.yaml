@@ -26,7 +26,6 @@ spec:
         path: kustomize/apps
         kustomize:
           namePrefix: '{{environment}}-'
-          replicas:
           images:
             - name: guestbook-ui
               newtag: '0.2'
