@@ -3,7 +3,7 @@
   "harness_service" : "argocdguestbook",
   "environment" : "dev",
   "image_newtag" : "1217-6f59d0e-65",
-  "test" : "23",
+  "test" : "24",
   "server_address" : "https://kubernetes.default.svc",
   "image_tag" : "1217-6f59d0e-65",
   "token" : "dev-token"
