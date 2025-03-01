@@ -2,8 +2,8 @@
   "cluster_name" : "dev-cluster",
   "harness_service" : "argocd-guestbook",
   "environment" : "dev",
-  "test" : "11",
+  "test" : "12",
   "server_address" : "https://kubernetes.default.svc",
-  "image_tag" : "1245-be9d5f4-45",
+  "image_tag" : "1219-79a3576-55",
   "token" : "dev-token"
 }
