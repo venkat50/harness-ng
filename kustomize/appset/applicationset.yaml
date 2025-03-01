@@ -27,7 +27,7 @@ spec:
         kustomize:
           namePrefix: '{{environment}}-'
           images:
-            - gcr.io/heptio-images/ks-guestbook-demo:0.2
+            - 'gcr.io/heptio-images/ks-guestbook-demo:0.2'
       destination:
         server: '{{server_address}}'
         namespace: 'guestbook-{{environment}}'
