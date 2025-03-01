@@ -26,10 +26,6 @@ spec:
         path: kustomize/apps
         kustomize:
           namePrefix: '{{environment}}-'
-          images:
-            - name: guestbook-ui
-              newtag: '0.2'
-              newName: ''gcr.io/heptio-images/ks-guestbook-demo'
       destination:
         server: '{{server_address}}'
         namespace: 'guestbook-{{environment}}'
