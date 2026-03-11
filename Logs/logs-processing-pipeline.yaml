@@ -1,0 +1,81 @@
+pipeline:
+  name: test-logs
+  identifier: testlogs
+  projectIdentifier: sample
+  orgIdentifier: default
+  tags: {}
+  stages:
+    - stage:
+        name: custom
+        identifier: custom
+        description: ""
+        type: Custom
+        spec:
+          execution:
+            steps:
+              - step:
+                  type: ShellScript
+                  name: logs
+                  identifier: logs
+                  spec:
+                    shell: Bash
+                    executionTarget: {}
+                    source:
+                      type: Inline
+                      spec:
+                        script: |+
+                  
+
+
+                          ACCOUNT_ID=<+account.identifier>
+                          PIPELINE_EXECUTION_PREFIX_KEY=$ACCOUNT_ID/<+trigger.payload.prefix>
+
+                          cat <<_EOF_ > download.sh
+                          curl -s "https://app.harness.io/gateway/log-service/blob/download?accountID=$ACCOUNT_ID&prefix=$PIPELINE_EXECUTION_PREFIX_KEY" \
+                            -X 'POST' \
+                            -H 'content-type: application/json' \
+                            -H 'x-api-key: <+secrets.getValue("account.account-admin-token")>' \
+                            -o response.json
+                          _EOF_
+
+                          chmod a+x download.sh
+    
+                          result="queued"
+                          while [ "$result" != "success" ]; do
+                             ./download.sh
+
+                             result=$(cat response.json | jq -r '.status')
+
+                             echo $result
+                             if [[ "$result" == "test" ]]; then
+                                break
+                             fi
+                             sleep 5
+                          done
+
+                          URL=$(cat response.json | jq -r ".link")
+
+                          curl -o logs.zip $URL
+                          microdnf install -y unzip
+                          unzip -q logs.zip
+                          find <+account.identifier> -type f -print0 | xargs -0 cat > pipeline.logs
+                          sed -i "s/$/,/" pipeline.logs
+                          echo '{"level": "INFO"}' >> pipeline.logs
+                          cat <<_EOF_ > splunk.log
+                          {
+                                  "sourcetype": "harness",
+                                  "index": "main",
+                                  "event": [
+                          _EOF_
+                          cat pipeline.logs >> splunk.log
+                          echo ']}' >> splunk.log
+
+                          curl -k  https://<splunk-host>:5000/services/collector/event \
+                               -H "Authorization: Splunk <token>" \
+                               -H "Content-Type: application/json" \
+                               -d @splunk.log
+
+                    environmentVariables: []
+                    outputVariables: []
+                  timeout: 10m
+        tags: {}
