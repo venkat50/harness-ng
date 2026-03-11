@@ -1,0 +1,19 @@
+template:
+  name: splunk
+  identifier: splunk
+  versionLabel: v1
+  type: Notification
+  projectIdentifier: ACME
+  orgIdentifier: DEMO
+  tags: {}
+  spec:
+    body:
+      content: |-
+
+        {
+         
+            "prefix": "pipeline/<+pipeline.identifier>/<+pipeline.sequenceId>/-<+pipeline.executionId>"
+
+        }
+      type: JSON
+    variables: []
